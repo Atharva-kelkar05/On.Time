@@ -19,67 +19,69 @@ class WelcomePage extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(12, 140, 12, 110),
-        child: Column(
-          children: [
-            Column(
-              children: [
-                  const Text(
-                  'on.time',
-                  style: TextStyle(
-                      fontSize: 75,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.white,
-                      letterSpacing: 1.5,
-                      fontFamily: 'Montserrat'),
-                ),
-                const SizedBox(height: 200),
-                const SizedBox(
-                  child: Center(
-                    child: Text(
-                      'Make yourself\n more on time',
-                      style: TextStyle(
-                          fontSize: 34,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.white,
-                          letterSpacing: 1.5,
-                          fontFamily: 'Open Sans'),
-                      //overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 160),
-                ElevatedButton(
-                  onPressed: () async {
-                    final prefs = await SharedPreferences.getInstance();
-                    await prefs.setBool('onboarded', true);
-                    //print('Clicked!');
-                    //navigating to homepage (dashboard.dart)
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DashBoard()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    minimumSize: const Size(325, 60),
-                  ),
-                  child: const Text(
-                    'START',
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Column(
+                children: [
+                    const Text(
+                    'on.time',
                     style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF0A0416),
+                        fontSize: 75,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
+                        letterSpacing: 1.5,
                         fontFamily: 'Montserrat'),
-                    textAlign: TextAlign.center,
                   ),
-                ),
-              ],
-            ),
-          ],
+                  const SizedBox(height: 200),
+                  const SizedBox(
+                    child: Center(
+                      child: Text(
+                        'Make yourself\n more on time',
+                        style: TextStyle(
+                            fontSize: 34,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                            letterSpacing: 1.5,
+                            fontFamily: 'Open Sans'),
+                        //overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 160),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final prefs = await SharedPreferences.getInstance();
+                      await prefs.setBool('onboarded', true);
+                      //print('Clicked!');
+                      //navigating to homepage (dashboard.dart)
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const DashBoard()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      minimumSize: const Size(325, 60),
+                    ),
+                    child: const Text(
+                      'START',
+                      style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFF0A0416),
+                          fontFamily: 'Montserrat'),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

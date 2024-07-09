@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:on_time/styles/common_styles.dart';
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:on_time/pages/schedule_time_line.dart';
 
 class DashBoard extends StatefulWidget {
   const DashBoard({super.key});
@@ -12,6 +13,14 @@ class DashBoard extends StatefulWidget {
 
 class _DashBoardState extends State<DashBoard> {
   int _selectedIndex = 0;
+  // final List<Task> tasks = [
+  //   Task(DateTime.now(), 'Task 1'),
+  //   Task(DateTime.now().add(const Duration(days: 1)), 'Task 2'),
+  //   Task(DateTime.now().add(const Duration(days: 2)), 'Task 3'),
+  //   Task(DateTime.now().add(const Duration(days: 3)), 'Task 4'),
+  //   Task(DateTime.now().add(const Duration(days: 4)), 'Task 5'),
+  //   Task(DateTime.now().add(const Duration(days: 5)), 'Task 6'),
+  // ];
   //DateTime _selectedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime _focusedDay = DateTime.now();
@@ -51,68 +60,80 @@ class _DashBoardState extends State<DashBoard> {
           )
         ],
       ),
-      body: Container(
-        decoration:
-            const BoxDecoration(gradient: CommonStyles.backgroundGradient),
-        height: MediaQuery.of(context).size.height * 0.99,
-        width: MediaQuery.of(context).size.width * 0.99,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-          const Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10.0),
-            child: Text(
-              "Let's be on.time!",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 26,
-                fontFamily: 'Open Sans',
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Container(
+          decoration:
+              const BoxDecoration(gradient: CommonStyles.backgroundGradient),
+          height: MediaQuery.of(context).size.height * 0.99,
+          width: MediaQuery.of(context).size.width * 0.99,
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+            const Padding(
+              padding: EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Text(
+                "Let's be on.time!",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 26,
+                  fontFamily: 'Open Sans',
+                ),
               ),
             ),
-          ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-          Center(
-            child: CustomSlidingSegmentedControl<int>(
-              fixedWidth: 120,
-              thumbDecoration: BoxDecoration(
-                  color: CommonStyles.backgroundGradient.colors[2],
-                  borderRadius: BorderRadius.circular(5)),
-              onTapSegment: (segment) {
-                print('Segment $segment selected');
-                return true;
-              },
-              innerPadding: const EdgeInsets.all(5.0),
-              decoration: BoxDecoration(
-                color: const Color(0xFF3C1F7B),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              initialValue: 0,
-              children: const {
-                0: Text('Schedule',
+            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+            Center(
+              child: CustomSlidingSegmentedControl<int>(
+                fixedWidth: 120,
+                thumbDecoration: BoxDecoration(
+                    color: CommonStyles.backgroundGradient.colors[2],
+                    borderRadius: BorderRadius.circular(5)),
+                onTapSegment: (segment) {
+                  print('Segment $segment selected');
+                  return true;
+                },
+                innerPadding: const EdgeInsets.all(5.0),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF3C1F7B),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                initialValue: 0,
+                children: const {
+                  0: Text('Schedule',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontFamily: 'Open Sans')),
+                  1: Text(
+                    'Note',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
-                        fontFamily: 'Open Sans')),
-                1: Text(
-                  'Note',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontFamily: 'Open Sans'),
-                ),
-              },
-              onValueChanged: (index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
+                        fontFamily: 'Open Sans'),
+                  ),
+                },
+                onValueChanged: (index) {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                },
+              ),
             ),
-          ),
-          Expanded(
-            child: _selectedIndex == 0
-                ? _buildScheduleContent()
-                : _buildNoteContent(),
-          ),
-        ]),
+            Expanded(
+              child: _selectedIndex == 0
+                  ? _buildScheduleContent()
+                  : _buildNoteContent(),
+            ),
+            // timeline for tracking date and tasks.
+
+            Container(
+              padding: const EdgeInsets.only(left: 20.0),
+              height: 300,
+              width: MediaQuery.of(context).size.width * 0.99,
+              child: ScheduleTimeLine(),
+            ),
+          ]),
+        ),
       ),
     );
   }
@@ -130,18 +151,14 @@ class _DashBoardState extends State<DashBoard> {
             daysOfWeekStyle: const DaysOfWeekStyle(
               decoration: BoxDecoration(
                 color: Colors.transparent,
-              // backgroundBlendMode: BlendMode.difference,
-            ),
-            weekdayStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 14,
-              fontWeight: FontWeight.bold
-            ),
-            weekendStyle: TextStyle(
-                  color: Colors.red,
+                // backgroundBlendMode: BlendMode.difference,
+              ),
+              weekdayStyle: TextStyle(
+                  color: Colors.white,
                   fontSize: 14,
-                  fontWeight: FontWeight.bold
-                ),
+                  fontWeight: FontWeight.bold),
+              weekendStyle: TextStyle(
+                  color: Colors.red, fontSize: 14, fontWeight: FontWeight.bold),
             ),
             focusedDay: _focusedDay,
             //customizing the header for the calendar.
@@ -150,10 +167,8 @@ class _DashBoardState extends State<DashBoard> {
               decoration: BoxDecoration(
                 color: Colors.transparent,
               ),
-              titleTextStyle: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold
-              ),
+              titleTextStyle:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               leftChevronIcon: Icon(
                 Icons.chevron_left,
                 color: Colors.white,
@@ -163,7 +178,6 @@ class _DashBoardState extends State<DashBoard> {
                 color: Colors.white,
               ),
               formatButtonVisible: false,
-
             ),
             calendarFormat: CalendarFormat.month,
             //Marking the selected day with a circle and changing the color of the selected day.
@@ -185,7 +199,8 @@ class _DashBoardState extends State<DashBoard> {
               ),
               selectedTextStyle: const TextStyle(
                 color: Colors.black,
-                fontWeight: FontWeight.bold,),
+                fontWeight: FontWeight.bold,
+              ),
               todayDecoration: const BoxDecoration(
                 color: Color(0xFF7E64FF), // Today's color
                 shape: BoxShape.circle,
@@ -198,7 +213,8 @@ class _DashBoardState extends State<DashBoard> {
             ),
             calendarBuilders: CalendarBuilders(
               defaultBuilder: (context, day, focusedDay) {
-                if (day.weekday == DateTime.sunday || day.weekday == DateTime.saturday) {
+                if (day.weekday == DateTime.sunday ||
+                    day.weekday == DateTime.saturday) {
                   return Center(
                     child: Text(
                       day.day.toString(),
