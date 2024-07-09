@@ -47,7 +47,7 @@ class WelcomePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 170),
+                const SizedBox(height: 160),
                 ElevatedButton(
                   onPressed: () async {
                     final prefs = await SharedPreferences.getInstance();

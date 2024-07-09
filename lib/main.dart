@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'on.time',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
       ),
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
               final prefs = snapshot.data!;
               final onboarded = prefs.getBool('onboarded') ?? false;
               // If onboarded, go to DashBoard, else show WelcomePage
-              return onboarded ? const DashBoard() : const WelcomePage();
+              return onboarded ? DashBoard() : const WelcomePage();
             } else {
               // Handle error or data not available scenario
               return const WelcomePage(); // Fallback to WelcomePage
